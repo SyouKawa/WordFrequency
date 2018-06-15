@@ -15,6 +15,8 @@ typedef struct word_node {
 void check_list(IN OUT pword *words_list, IN OUT pword *ptail, IN char cur_word[50]);
 void add_to_list(IN OUT pword *words_list, IN OUT pword *ptail, IN char cur_word[50]);
 void del_signs(IN OUT char *cur_word);
+void convert_toLower_First(IN OUT char *cur_word);
+void convert_toLower_After(IN OUT char *cur_word, IN int start_index);
 
 int main() {
 	FILE *fp,*save;
@@ -49,6 +51,7 @@ int main() {
 							temp_word[i] = 0;
 
 							del_signs(temp_word);
+							convert_toLower_First(temp_word);
 							check_list(&words_list, &ptail, temp_word);
 
 							word_head = NULL;
@@ -65,6 +68,7 @@ int main() {
 						temp_word[word_tail_space - word_head] = 0;
 
 						del_signs(temp_word);
+						convert_toLower_First(temp_word);
 						check_list(&words_list, &ptail, temp_word);
 
 						word_head = NULL;
@@ -84,6 +88,7 @@ int main() {
 					temp_word[buffer + i - word_head] = 0;
 
 					del_signs(temp_word);
+					convert_toLower_First(temp_word);
 					check_list(&words_list, &ptail, temp_word);
 
 					word_head = NULL;
@@ -96,6 +101,7 @@ int main() {
 					temp_word[i] = 0;
 
 					del_signs(temp_word);
+					convert_toLower_First(temp_word);
 					check_list(&words_list, &ptail, temp_word);
 					
 					memset(temp_word, 0, sizeof(temp_word));
@@ -163,4 +169,21 @@ void del_signs(IN OUT char *cur_word) {
 	/*if ((cur_word[len-1]>'Z'&&cur_word[len-1]<'a') || cur_word[len-1]<'A' || cur_word[len-1]>'z') {
 		cur_word[len - 1] = 0;
 	}*/
+}
+void convert_toLower_First(IN OUT char *cur_word) {
+	if (cur_word[0] > 'A'&&cur_word[0] < 'Z') {
+		cur_word[0] = tolower(cur_word[0]);
+	}
+	if(cur_word[1] > 'A'&&cur_word[1] < 'Z'){
+		convert_toLower_After(cur_word, 1);
+	}
+}
+void convert_toLower_After(IN OUT char *cur_word,IN int start_index) {
+	for (int i = start_index; i < strlen(cur_word); i++) {
+		if (cur_word[i] > 'A'&&cur_word[i] < 'Z') {
+			cur_word[i] = tolower(cur_word[i]);
+		}else {
+			continue;
+		}
+	}
 }
